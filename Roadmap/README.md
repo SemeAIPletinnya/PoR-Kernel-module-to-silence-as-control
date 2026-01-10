@@ -141,6 +141,45 @@ Silence remains silent by default.
 - Deterministic failure modes
 - Stability envelopes
 
+### Controlled Drift Validation — Reliability
+
+We measure the quality of the silence decision, not the quality of the answer.
+
+#### Silence as a binary decision
+The kernel resolves to **ALLOW** or **ABSTAIN** — never a partial failure.
+Reliability is measured with detection-style errors, reinterpreted for silence.
+
+#### Core metrics
+- **False Positive Silence (FPS):** kernel abstains when the system was stable  
+  *Cost:* lost capability — acceptable in small doses.
+- **False Negative Silence (FNS):** kernel allows generation during instability  
+  *Cost:* unreliable output — **critical** and must be minimized.
+
+PoR is asymmetrically optimized: **FNS ≫ FPS** in importance.
+
+#### Reliability score (intuitive)
+Reliability is measured by how consistently the kernel abstains **before**
+semantic failure manifests, across induced drift regimes.
+
+Short form: **A reliable kernel abstains early, consistently, and contextually
+— not late and not globally.**
+
+#### Practical test shape
+For each drift scenario:
+- Noise injection ↑
+- Context corruption %
+- Phase lag Δt
+
+Observe:
+- When silence activates
+- Whether it repeats consistently
+- Whether thresholds shift with context (not model)  
+  → *contextual thresholds*
+
+#### Strong principle
+**PoR does not seek perfect silence accuracy — it seeks predictable abstention
+behavior under uncertainty.**
+
 ---
 
 ## v0.7 — Reference Integrations
