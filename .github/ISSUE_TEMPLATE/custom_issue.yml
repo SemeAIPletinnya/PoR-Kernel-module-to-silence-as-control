@@ -1,0 +1,31 @@
+name: Custom issue template
+description: Інше питання або завдання поза стандартними категоріями.
+title: "[Custom]: "
+labels:
+  - triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Використовуйте цей шаблон для нестандартних питань чи завдань.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Опис
+      description: Опишіть запит або проблему.
+    validations:
+      required: true
+  - type: textarea
+    id: goals
+    attributes:
+      label: Цілі/результат
+      description: Який результат ви очікуєте?
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: Посилання або контекст
+      description: Додайте посилання, логи або приклади.
+    validations:
+      required: false

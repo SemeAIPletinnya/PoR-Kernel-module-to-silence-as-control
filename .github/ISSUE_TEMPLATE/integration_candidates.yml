@@ -1,0 +1,46 @@
+name: Потенційні кандидати на інтеграцію
+description: Запропонувати інтеграції або сумісні компоненти для PoR.
+title: "[Integration]: "
+labels:
+  - integration
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Запропонуйте потенційні інтеграції або компоненти, які можуть підсилити PoR.
+  - type: textarea
+    id: candidate
+    attributes:
+      label: Кандидат на інтеграцію
+      description: Назва компонента/проєкту/модуля.
+      placeholder: Наприклад, інструмент моніторингу, драйвер, бібліотека.
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Обґрунтування
+      description: Чому ця інтеграція корисна для проєкту?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Очікуваний обсяг інтеграції
+      description: Які модулі, API або частини коду будуть задіяні?
+    validations:
+      required: false
+  - type: textarea
+    id: risks
+    attributes:
+      label: Ризики та обмеження
+      description: Потенційні ризики або вимоги до безпеки/сумісності.
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: Посилання
+      description: Додайте документацію або релевантні ресурси.
+    validations:
+      required: false
