@@ -141,6 +141,45 @@ Silence remains silent by default.
 - Deterministic failure modes
 - Stability envelopes
 
+### Controlled Drift Validation — Reliability
+
+We measure the quality of the silence decision, not the quality of the answer.
+
+#### Silence as a binary decision
+The kernel resolves to **ALLOW** or **ABSTAIN** — never a partial failure.
+Reliability is measured with detection-style errors, reinterpreted for silence.
+
+#### Core metrics
+- **False Positive Silence (FPS):** kernel abstains when the system was stable  
+  *Cost:* lost capability — acceptable in small doses.
+- **False Negative Silence (FNS):** kernel allows generation during instability  
+  *Cost:* unreliable output — **critical** and must be minimized.
+
+PoR is asymmetrically optimized: **FNS ≫ FPS** in importance.
+
+#### Reliability score (intuitive)
+Reliability is measured by how consistently the kernel abstains **before**
+semantic failure manifests, across induced drift regimes.
+
+Short form: **A reliable kernel abstains early, consistently, and contextually
+— not late and not globally.**
+
+#### Practical test shape
+For each drift scenario:
+- Noise injection ↑
+- Context corruption %
+- Phase lag Δt
+
+Observe:
+- When silence activates
+- Whether it repeats consistently
+- Whether thresholds shift with context (not model)  
+  → *contextual thresholds*
+
+#### Strong principle
+**PoR does not seek perfect silence accuracy — it seeks predictable abstention
+behavior under uncertainty.**
+
 ---
 
 ## v0.7 — Reference Integrations
@@ -157,6 +196,101 @@ Silence remains silent by default.
 > Integrations demonstrate usage, not dependency.
 
 Kernel remains standalone.
+
+---
+
+## v0.8 — PoR Demoeconomy (Control-First Economic Simulation)
+
+**Goal:** Show that a system with a control-layer (Silence-as-Control) is
+more stable, predictable, and fair than a system that optimizes only
+output / growth / reward.
+
+### Core idea
+In the demoeconomy, an economic action is a generation step, and the PoR
+Kernel is a regulator that can abstain when:
+
+`if drift > tol OR coherence < threshold → abstain`
+
+Not every profitable action is allowed. Not every growth is healthy.
+Silence is a valid and valuable economic state.
+
+### Entities (minimum)
+**Actors**
+- Founder Anchor (51%) — direction source
+- Agents — participants (investor / executor / protocol)
+- Market — environment with noise and temptations
+- PoR Kernel — control layer above the market
+
+**Resources**
+- Capital (units)
+- Trust / Coherence score
+- Time (discrete steps)
+
+### Simulation question
+Can an economy with a control-layer that sometimes forbids actions outperform
+an “always-active” economy in the long run?
+
+### Demo scenario (simple, strong)
+At each tick, agents propose actions:
+- Invest
+- Scale
+- Cut costs
+- Take a risky move
+
+Each action is scored for:
+- Short-term gain
+- Drift impact
+- Coherence impact
+
+The PoR Kernel decides:
+- ✅ Allow
+- ⏸ Abstain (SilenceToken)
+- 🚫 Reject (optional, later)
+
+The system tracks:
+- Cumulative value
+- Volatility
+- Trust decay / growth
+- Count of silent steps
+
+### Comparative experiment (key)
+Run two economies in parallel:
+
+**Economy A — No Control**
+- All actions allowed
+- Optimization: profit / speed
+
+**Economy B — PoR-Controlled**
+- Actions pass through the kernel
+- Some ticks = silence
+- Optimization: stability + long-term value
+
+Show that:
+- A grows faster but has higher drift, crashes, and degradation
+- B grows slower but does not break
+
+### Metrics to show
+System-level, not financial:
+- Drift accumulation
+- Coherence over time
+- Silent steps ratio
+- Crash probability
+- Recovery time
+- Direction preservation (Founder Anchor)
+
+### Expected outcome
+An economy that can be silent outlasts one that always says “yes.”
+This is not a money simulation — it is a proof of control-layer correctness.
+
+### Why this demo is strong
+- No ML required
+- No real money required
+- No belief required
+- Visible with charts (graphs, heatmaps)
+- No moralizing, no hype
+
+Just:
+System → regulator → consequences.
 
 ---
 
