@@ -1,0 +1,61 @@
+name: Bug report
+description: Повідомити про проблему, щоб ми могли її відтворити та виправити.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Дякуємо за повідомлення про помилку. Будь ласка, заповніть поля нижче.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Короткий опис
+      description: Що не працює або працює неправильно?
+      placeholder: Наприклад, модуль не ініціалізується після збирання.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Кроки для відтворення
+      description: Опишіть точні кроки, щоб відтворити проблему.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Очікувана поведінка
+      description: Що мало б статися?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Фактична поведінка
+      description: Що сталося насправді?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Середовище
+      description: Наведіть ОС, версію ядра та інші релевантні деталі.
+      placeholder: |
+        ОС: 
+        Версія ядра: 
+        Гілка/коміт: 
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи та артефакти
+      description: Додайте логи, stack traces або інші артефакти.
+    validations:
+      required: false

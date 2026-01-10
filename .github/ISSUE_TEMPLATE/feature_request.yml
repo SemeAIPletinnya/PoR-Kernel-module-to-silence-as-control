@@ -1,0 +1,38 @@
+name: Feature request
+description: Запропонувати нову функцію або поліпшення.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Опишіть бажану функціональність і мотивацію.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Проблема або мотивація
+      description: Яку проблему вирішить ця зміна?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Пропозиція рішення
+      description: Як ви бачите реалізацію цієї функції?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Альтернативи
+      description: Чи розглядалися інші варіанти?
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Додатковий контекст
+      description: Посилання, приклади, або інші деталі.
+    validations:
+      required: false
