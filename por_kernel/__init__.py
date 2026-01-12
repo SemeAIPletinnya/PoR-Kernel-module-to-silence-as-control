@@ -1,7 +1,8 @@
 """Proof-of-Resonance kernel package."""
 
-from .kernel import resonate
-from .metrics import (
+from .attestation import Attestation, generate_attestation
+from .core import resonate
+from .drift import (
     MetricResult,
     compute_coherence_entropy,
     compute_coherence_factual_grounding,
@@ -12,8 +13,11 @@ from .metrics import (
     compute_drift_token_overlap,
     compute_stability_score,
 )
+from .silence import SilenceDecision, gate_silence
 
 __all__ = [
+    "Attestation",
+    "generate_attestation",
     "resonate",
     "MetricResult",
     "compute_drift_embedding",
@@ -24,4 +28,6 @@ __all__ = [
     "compute_coherence_entropy",
     "compute_coherence_factual_grounding",
     "compute_stability_score",
+    "SilenceDecision",
+    "gate_silence",
 ]

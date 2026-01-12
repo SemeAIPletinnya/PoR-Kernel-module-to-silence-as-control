@@ -1,9 +1,5 @@
-"""Core functionality for Proof-of-Resonance."""
+"""Backwards-compatible shim for the Proof-of-Resonance core."""
 
+from .core import resonate
 
-def resonate(signal: str) -> str:
-    """Return a normalized resonance signature for the given signal."""
-    cleaned = signal.strip()
-    if not cleaned:
-        return "silent"
-    return f"resonance:{cleaned.lower()}"
+__all__ = ["resonate"]
