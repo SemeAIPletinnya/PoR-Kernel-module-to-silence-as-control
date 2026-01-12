@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "por-kernel"
+version = "0.1.0"
+description = "Proof-of-Resonance kernel with silence-as-control gating."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Anton Semenenko" },
+]
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+por = "por_kernel.cli:main"
+
+[tool.setuptools]
+packages = ["por_kernel"]
