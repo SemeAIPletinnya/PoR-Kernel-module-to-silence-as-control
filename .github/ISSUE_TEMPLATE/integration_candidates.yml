@@ -1,5 +1,5 @@
-name: Потенційні кандидати на інтеграцію
-description: Запропонувати інтеграції або сумісні компоненти для PoR.
+name: Potential integration candidates
+description: Propose integrations or compatible components for PoR.
 title: "[Integration]: "
 labels:
   - integration
@@ -7,40 +7,40 @@ body:
   - type: markdown
     attributes:
       value: |
-        Запропонуйте потенційні інтеграції або компоненти, які можуть підсилити PoR.
+        Propose potential integrations or components that could strengthen PoR.
   - type: textarea
     id: candidate
     attributes:
-      label: Кандидат на інтеграцію
-      description: Назва компонента/проєкту/модуля.
-      placeholder: Наприклад, інструмент моніторингу, драйвер, бібліотека.
+      label: Integration candidate
+      description: Name of the component/project/module.
+      placeholder: For example, a monitoring tool, driver, or library.
     validations:
       required: true
   - type: textarea
     id: rationale
     attributes:
-      label: Обґрунтування
-      description: Чому ця інтеграція корисна для проєкту?
+      label: Rationale
+      description: Why is this integration useful for the project?
     validations:
       required: true
   - type: textarea
     id: scope
     attributes:
-      label: Очікуваний обсяг інтеграції
-      description: Які модулі, API або частини коду будуть задіяні?
+      label: Expected integration scope
+      description: Which modules, APIs, or parts of the code will be involved?
     validations:
       required: false
   - type: textarea
     id: risks
     attributes:
-      label: Ризики та обмеження
-      description: Потенційні ризики або вимоги до безпеки/сумісності.
+      label: Risks and constraints
+      description: Potential risks or security/compatibility requirements.
     validations:
       required: false
   - type: textarea
     id: references
     attributes:
-      label: Посилання
-      description: Додайте документацію або релевантні ресурси.
+      label: References
+      description: Add documentation or relevant resources.
     validations:
       required: false
