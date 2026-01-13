@@ -20,6 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Validation runs on both pull requests and pushes.
       - name: Run Proof-of-Resonance Core
         run: echo "Running Proof-of-Resonance core validation"
 
