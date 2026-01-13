@@ -6,6 +6,7 @@ on:
       - main
   pull_request:
 
+# Required permissions for validation and OIDC-backed provenance on main pushes.
 permissions:
   contents: read
   id-token: write
