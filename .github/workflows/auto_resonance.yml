@@ -11,6 +11,8 @@ permissions:
   id-token: write
   attestations: write
 
+# OIDC-backed provenance is gated to trusted pushes on main.
+
 jobs:
   resonance:
     runs-on: ubuntu-latest
