@@ -11,7 +11,7 @@ permissions:
   id-token: write
   attestations: write
 
-# OIDC-backed provenance is gated to trusted pushes on main.
+# OIDC-backed provenance is gated to trusted pushes on main only.
 
 jobs:
   resonance:
