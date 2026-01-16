@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "id": "drift-small-phase",
+      "category": "drift",
+      "description": "Synthetic phase drift with a small linear offset.",
+      "drift": 0.152,
+      "coherence": 0.72,
+      "expected_stability": "degrading",
+      "expected_proceed": false,
+      "actual_proceed": false,
+      "passed": true
+    },
+    {
+      "id": "drift-step-shift",
+      "category": "drift",
+      "description": "Synthetic drift featuring a sudden step change.",
+      "drift": 0.36,
+      "coherence": 0.48,
+      "expected_stability": "unstable",
+      "expected_proceed": false,
+      "actual_proceed": false,
+      "passed": true
+    },
+    {
+      "id": "coherence-high",
+      "category": "coherence",
+      "description": "Synthetic highly coherent signal with minimal noise.",
+      "drift": 0.0,
+      "coherence": 0.93,
+      "expected_stability": "stable",
+      "expected_proceed": true,
+      "actual_proceed": true,
+      "passed": true
+    },
+    {
+      "id": "coherence-low",
+      "category": "coherence",
+      "description": "Synthetic low coherence signal with elevated noise.",
+      "drift": 0.0,
+      "coherence": 0.33,
+      "expected_stability": "degrading",
+      "expected_proceed": false,
+      "actual_proceed": false,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0
+  }
+}
