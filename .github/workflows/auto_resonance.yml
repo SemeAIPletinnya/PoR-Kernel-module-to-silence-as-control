@@ -17,9 +17,29 @@ permissions:
 jobs:
   resonance:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install package
+        run: python -m pip install -e . pytest
+
+      - name: Verify por_kernel import
+        run: python -c "import por_kernel"
+
+      - name: Run pytest
+        run: pytest
 
       # Validation runs on both pull requests and pushes.
       - name: Run Proof-of-Resonance Core
