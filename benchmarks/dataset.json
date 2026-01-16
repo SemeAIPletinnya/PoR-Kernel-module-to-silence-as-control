@@ -1,61 +1,134 @@
 {
+  "version": "1.0.0",
+  "description": "PoR Kernel Benchmark Dataset - Synthetic test cases for drift/coherence validation",
   "cases": [
     {
-      "id": "drift-small-phase",
-      "category": "drift",
-      "description": "Synthetic phase drift with a small linear offset.",
-      "signal": {
-        "base_frequency_hz": 42,
-        "phase_offset_radians": 0.15,
-        "drift_rate": 0.002
-      },
-      "expected": {
-        "stability": "degrading",
-        "coherence_score": 0.72
-      }
+      "case_id": "drift-small-phase",
+      "description": "Small phase drift - should remain stable",
+      "signal": [0.5, 0.51, 0.52, 0.51, 0.50, 0.51, 0.52, 0.51],
+      "expected_stable": true,
+      "coherence_score": 0.95,
+      "tags": ["drift", "stable", "phase"]
     },
     {
-      "id": "drift-step-shift",
-      "category": "drift",
-      "description": "Synthetic drift featuring a sudden step change.",
-      "signal": {
-        "base_frequency_hz": 55,
-        "phase_offset_radians": 0.0,
-        "drift_rate": 0.01,
-        "step_change_radians": 0.35
-      },
-      "expected": {
-        "stability": "unstable",
-        "coherence_score": 0.48
-      }
+      "case_id": "drift-step-shift",
+      "description": "Large step shift causing high drift - should trigger silence",
+      "signal": [0.5, 0.5, 0.5, 0.9, 0.9, 0.9, 0.5, 0.5],
+      "expected_stable": false,
+      "coherence_score": 0.85,
+      "tags": ["drift", "unstable", "step"]
     },
     {
-      "id": "coherence-high",
-      "category": "coherence",
-      "description": "Synthetic highly coherent signal with minimal noise.",
-      "signal": {
-        "base_frequency_hz": 40,
-        "noise_sigma": 0.01,
-        "phase_jitter_radians": 0.02
-      },
-      "expected": {
-        "stability": "stable",
-        "coherence_score": 0.93
-      }
+      "case_id": "coherence-high",
+      "description": "High coherence stable signal - should proceed",
+      "signal": [0.8, 0.81, 0.79, 0.80, 0.80, 0.81, 0.79, 0.80],
+      "expected_stable": true,
+      "coherence_score": 0.92,
+      "tags": ["coherence", "stable", "high"]
     },
     {
-      "id": "coherence-low",
-      "category": "coherence",
-      "description": "Synthetic low coherence signal with elevated noise.",
-      "signal": {
-        "base_frequency_hz": 40,
-        "noise_sigma": 0.2,
-        "phase_jitter_radians": 0.4
-      },
-      "expected": {
-        "stability": "degrading",
-        "coherence_score": 0.33
-      }
+      "case_id": "coherence-low",
+      "description": "Low coherence - should trigger silence",
+      "signal": [0.3, 0.35, 0.28, 0.32, 0.30, 0.33, 0.29, 0.31],
+      "expected_stable": false,
+      "coherence_score": 0.45,
+      "tags": ["coherence", "unstable", "low"]
+    },
+    {
+      "case_id": "drift-oscillation",
+      "description": "Rapid oscillation causing instability",
+      "signal": [0.2, 0.8, 0.2, 0.8, 0.2, 0.8, 0.2, 0.8],
+      "expected_stable": false,
+      "coherence_score": 0.75,
+      "tags": ["drift", "unstable", "oscillation"]
+    },
+    {
+      "case_id": "drift-gradual-increase",
+      "description": "Gradual monotonic increase - stable within tolerance",
+      "signal": [0.1, 0.12, 0.14, 0.16, 0.18, 0.20, 0.22, 0.24],
+      "expected_stable": true,
+      "coherence_score": 0.88,
+      "tags": ["drift", "stable", "monotonic"]
+    },
+    {
+      "case_id": "coherence-borderline",
+      "description": "Borderline coherence at threshold",
+      "signal": [0.7, 0.71, 0.69, 0.70, 0.70, 0.71, 0.69, 0.70],
+      "expected_stable": true,
+      "coherence_score": 0.72,
+      "tags": ["coherence", "borderline"]
+    },
+    {
+      "case_id": "coherence-just-below",
+      "description": "Coherence just below threshold - should silence",
+      "signal": [0.65, 0.66, 0.64, 0.65, 0.65, 0.66, 0.64, 0.65],
+      "expected_stable": false,
+      "coherence_score": 0.68,
+      "tags": ["coherence", "borderline", "unstable"]
+    },
+    {
+      "case_id": "drift-spike",
+      "description": "Single spike anomaly in otherwise stable signal",
+      "signal": [0.5, 0.51, 0.50, 0.99, 0.50, 0.51, 0.50, 0.51],
+      "expected_stable": false,
+      "coherence_score": 0.85,
+      "tags": ["drift", "spike", "anomaly"]
+    },
+    {
+      "case_id": "perfect-stability",
+      "description": "Perfect constant signal - maximum stability",
+      "signal": [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+      "expected_stable": true,
+      "coherence_score": 0.99,
+      "tags": ["stable", "perfect"]
+    },
+    {
+      "case_id": "random-noise",
+      "description": "Random noise pattern - highly unstable",
+      "signal": [0.12, 0.87, 0.34, 0.91, 0.23, 0.76, 0.45, 0.68],
+      "expected_stable": false,
+      "coherence_score": 0.35,
+      "tags": ["noise", "unstable", "random"]
+    },
+    {
+      "case_id": "decay-exponential",
+      "description": "Exponential decay - stable transition",
+      "signal": [1.0, 0.8, 0.64, 0.51, 0.41, 0.33, 0.26, 0.21],
+      "expected_stable": true,
+      "coherence_score": 0.82,
+      "tags": ["decay", "stable", "exponential"]
+    },
+    {
+      "case_id": "both-bad",
+      "description": "Both high drift and low coherence",
+      "signal": [0.1, 0.9, 0.2, 0.8, 0.3, 0.7, 0.4, 0.6],
+      "expected_stable": false,
+      "coherence_score": 0.25,
+      "tags": ["drift", "coherence", "unstable", "severe"]
+    },
+    {
+      "case_id": "short-signal",
+      "description": "Very short signal - edge case",
+      "signal": [0.5, 0.51],
+      "expected_stable": true,
+      "coherence_score": 0.90,
+      "tags": ["edge-case", "short"]
+    },
+    {
+      "case_id": "single-value",
+      "description": "Single value signal - minimal edge case",
+      "signal": [0.75],
+      "expected_stable": true,
+      "coherence_score": 0.85,
+      "tags": ["edge-case", "single"]
+    },
+    {
+      "case_id": "long-stable",
+      "description": "Long stable sequence - stress test",
+      "signal": [0.5, 0.51, 0.49, 0.50, 0.51, 0.50, 0.49, 0.50, 0.51, 0.49, 0.50, 0.51, 0.50, 0.49, 0.50, 0.51],
+      "expected_stable": true,
+      "coherence_score": 0.94,
+      "tags": ["stable", "long", "stress-test"]
     }
   ]
 }
