@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "id": "drift-small-phase",
+      "category": "drift",
+      "description": "Synthetic phase drift with a small linear offset.",
+      "signal": {
+        "base_frequency_hz": 42,
+        "phase_offset_radians": 0.15,
+        "drift_rate": 0.002
+      },
+      "expected": {
+        "stability": "degrading",
+        "coherence_score": 0.72
+      }
+    },
+    {
+      "id": "drift-step-shift",
+      "category": "drift",
+      "description": "Synthetic drift featuring a sudden step change.",
+      "signal": {
+        "base_frequency_hz": 55,
+        "phase_offset_radians": 0.0,
+        "drift_rate": 0.01,
+        "step_change_radians": 0.35
+      },
+      "expected": {
+        "stability": "unstable",
+        "coherence_score": 0.48
+      }
+    },
+    {
+      "id": "coherence-high",
+      "category": "coherence",
+      "description": "Synthetic highly coherent signal with minimal noise.",
+      "signal": {
+        "base_frequency_hz": 40,
+        "noise_sigma": 0.01,
+        "phase_jitter_radians": 0.02
+      },
+      "expected": {
+        "stability": "stable",
+        "coherence_score": 0.93
+      }
+    },
+    {
+      "id": "coherence-low",
+      "category": "coherence",
+      "description": "Synthetic low coherence signal with elevated noise.",
+      "signal": {
+        "base_frequency_hz": 40,
+        "noise_sigma": 0.2,
+        "phase_jitter_radians": 0.4
+      },
+      "expected": {
+        "stability": "degrading",
+        "coherence_score": 0.33
+      }
+    }
+  ]
+}
