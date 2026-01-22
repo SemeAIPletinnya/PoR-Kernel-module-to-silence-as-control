@@ -1,53 +1,173 @@
 {
+  "summary": {
+    "total": 16,
+    "passed": 14,
+    "failed": 2,
+    "pass_rate": 87.5,
+    "avg_execution_time_ms": 0.0087,
+    "min_execution_time_ms": 0.0012,
+    "max_execution_time_ms": 0.035
+  },
   "results": [
     {
-      "id": "drift-small-phase",
-      "category": "drift",
-      "description": "Synthetic phase drift with a small linear offset.",
-      "drift": 0.152,
-      "coherence": 0.72,
-      "expected_stability": "degrading",
-      "expected_proceed": false,
-      "actual_proceed": false,
-      "passed": true
+      "case_id": "drift-small-phase",
+      "description": "Small phase drift - should remain stable",
+      "drift": 0.005,
+      "coherence": 0.9629,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.035
     },
     {
-      "id": "drift-step-shift",
-      "category": "drift",
-      "description": "Synthetic drift featuring a sudden step change.",
-      "drift": 0.36,
-      "coherence": 0.48,
-      "expected_stability": "unstable",
-      "expected_proceed": false,
-      "actual_proceed": false,
-      "passed": true
+      "case_id": "drift-step-shift",
+      "description": "Large step shift causing high drift - should trigger silence",
+      "drift": 0.2523,
+      "coherence": 0.8369,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.0132
     },
     {
-      "id": "coherence-high",
-      "category": "coherence",
-      "description": "Synthetic highly coherent signal with minimal noise.",
+      "case_id": "coherence-high",
+      "description": "High coherence stable signal - should proceed",
+      "drift": 0.0126,
+      "coherence": 0.9419,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0086
+    },
+    {
+      "case_id": "coherence-low",
+      "description": "Low coherence - should trigger silence",
+      "drift": 0.037,
+      "coherence": 0.6086,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.0074
+    },
+    {
+      "case_id": "drift-oscillation",
+      "description": "Rapid oscillation causing instability",
+      "drift": 0.3,
+      "coherence": 0.735,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.0066
+    },
+    {
+      "case_id": "drift-gradual-increase",
+      "description": "Gradual monotonic increase - stable within tolerance",
+      "drift": 0.01,
+      "coherence": 0.9023,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.007
+    },
+    {
+      "case_id": "coherence-borderline",
+      "description": "Borderline coherence at threshold",
+      "drift": 0.0126,
+      "coherence": 0.8019,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0062
+    },
+    {
+      "case_id": "coherence-just-below",
+      "description": "Coherence just below threshold - should silence",
+      "drift": 0.0126,
+      "coherence": 0.7739,
+      "silence_triggered": false,
+      "expected_stable": false,
+      "passed": false,
+      "execution_time_ms": 0.006
+    },
+    {
+      "case_id": "drift-spike",
+      "description": "Single spike anomaly in otherwise stable signal",
+      "drift": 0.3078,
+      "coherence": 0.8468,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.0064
+    },
+    {
+      "case_id": "perfect-stability",
+      "description": "Perfect constant signal - maximum stability",
       "drift": 0.0,
-      "coherence": 0.93,
-      "expected_stability": "stable",
-      "expected_proceed": true,
-      "actual_proceed": true,
-      "passed": true
+      "coherence": 0.993,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0062
     },
     {
-      "id": "coherence-low",
-      "category": "coherence",
-      "description": "Synthetic low coherence signal with elevated noise.",
+      "case_id": "random-noise",
+      "description": "Random noise pattern - highly unstable",
+      "drift": 0.4439,
+      "coherence": 0.4605,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.0081
+    },
+    {
+      "case_id": "decay-exponential",
+      "description": "Exponential decay - stable transition",
+      "drift": 0.1099,
+      "coherence": 0.7964,
+      "silence_triggered": true,
+      "expected_stable": true,
+      "passed": false,
+      "execution_time_ms": 0.0063
+    },
+    {
+      "case_id": "both-bad",
+      "description": "Both high drift and low coherence",
+      "drift": 0.466,
+      "coherence": 0.3928,
+      "silence_triggered": true,
+      "expected_stable": false,
+      "passed": true,
+      "execution_time_ms": 0.006
+    },
+    {
+      "case_id": "short-signal",
+      "description": "Very short signal - edge case",
+      "drift": 0.005,
+      "coherence": 0.9285,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0032
+    },
+    {
+      "case_id": "single-value",
+      "description": "Single value signal - minimal edge case",
       "drift": 0.0,
-      "coherence": 0.33,
-      "expected_stability": "degrading",
-      "expected_proceed": false,
-      "actual_proceed": false,
-      "passed": true
+      "coherence": 0.895,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0012
+    },
+    {
+      "case_id": "long-stable",
+      "description": "Long stable sequence - stress test",
+      "drift": 0.0092,
+      "coherence": 0.9558,
+      "silence_triggered": false,
+      "expected_stable": true,
+      "passed": true,
+      "execution_time_ms": 0.0113
     }
-  ],
-  "summary": {
-    "total": 4,
-    "passed": 4,
-    "failed": 0
-  }
+  ]
 }
