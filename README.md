@@ -104,6 +104,8 @@ Future versions may extend:
 
 ## License
 
+Commercial use, audits and PoR certification are available. See documentation.
+
 MIT (or specify if different)
 
 ---

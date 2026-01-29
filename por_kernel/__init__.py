@@ -1,4 +1,6 @@
-"""Proof-of-Resonance kernel package."""
+"""
+PoR Kernel v0.2.0 - Proof-of-Resonance Core
+============================================
 
 from .kernel import resonate
 from .metrics import (

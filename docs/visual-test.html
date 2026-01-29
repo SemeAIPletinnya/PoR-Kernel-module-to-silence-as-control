@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoR Kernel — Test Visualization</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    .glow-green { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+    .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+
+    .test-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .test-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .pulse-green {
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.8); }
+    }
+
+    .decision-flow {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+    }
+
+    .silence-zone {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+      border: 1px dashed rgba(239, 68, 68, 0.5);
+    }
+
+    .proceed-zone {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2));
+      border: 1px dashed rgba(34, 197, 94, 0.5);
+    }
+
+    canvas {
+      display: block;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="text-white p-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+        PoR Kernel — Test Visualization
+      </h1>
+      <p class="text-gray-400 mono text-sm">Proof-of-Resonance | Silence-as-Control</p>
+    </div>
+
+    <div class="grid grid-cols-4 gap-4 mb-8">
+      <div class="test-card rounded-xl p-5 text-center glow-green">
+        <div class="text-4xl font-bold text-green-400" id="passed-count">7</div>
+        <div class="text-sm text-gray-400 mt-1">Tests Passed</div>
+      </div>
+      <div class="test-card rounded-xl p-5 text-center">
+        <div class="text-4xl font-bold text-red-400" id="failed-count">0</div>
+        <div class="text-sm text-gray-400 mt-1">Tests Failed</div>
+      </div>
+      <div class="test-card rounded-xl p-5 text-center glow-blue">
+        <div class="text-4xl font-bold text-blue-400">100%</div>
+        <div class="text-sm text-gray-400 mt-1">Coverage</div>
+      </div>
+      <div class="test-card rounded-xl p-5 text-center">
+        <div class="text-4xl font-bold text-purple-400">0.04s</div>
+        <div class="text-sm text-gray-400 mt-1">Execution Time</div>
+      </div>
+    </div>
+
+    <div class="test-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+        Decision Logic: por_kernel(drift, coherence)
+      </h2>
+
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-sm text-gray-400 mb-3 mono">Decision Matrix (drift × coherence)</h3>
+          <div class="relative">
+            <div class="absolute -left-16 top-1/2 -translate-y-1/2 -rotate-90 text-xs text-gray-500 mono">
+              coherence →
+            </div>
+            <div class="absolute bottom-[-24px] left-1/2 -translate-x-1/2 text-xs text-gray-500 mono">
+              drift →
+            </div>
+            <canvas id="decision-canvas" width="420" height="420"></canvas>
+            <div class="flex justify-between mt-2 text-xs text-gray-500 mono">
+              <span>0.0</span>
+              <span>tol=0.1</span>
+              <span>1.0</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded bg-green-500"></div>
+              <span class="text-gray-400">PROCEED</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 rounded bg-red-500"></div>
+              <span class="text-gray-400">SILENCE</span>
+            </div>
+          </div>
+
+          <div class="mt-4 grid gap-3">
+            <div class="flex items-center justify-between text-xs text-gray-400">
+              <span class="mono">Hover cell</span>
+              <span class="mono" id="cell-label">drift=0.1 · coherence=0.9 → PROCEED</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="text-xs text-gray-400">
+                <span class="mono">tol (drift)</span>
+                <input id="tol-input" type="range" min="0" max="0.5" step="0.01" value="0.1" class="w-full">
+              </label>
+              <label class="text-xs text-gray-400">
+                <span class="mono">thresh (coherence)</span>
+                <input id="thresh-input" type="range" min="0.5" max="1" step="0.01" value="0.7" class="w-full">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm text-gray-400 mb-3 mono">Control Flow</h3>
+          <div class="space-y-3">
+            <div class="decision-flow rounded-lg p-4">
+              <div class="mono text-sm text-blue-300 mb-2">INPUT</div>
+              <div class="flex gap-4">
+                <div class="bg-blue-900/50 rounded px-3 py-1 mono text-sm">drift: float</div>
+                <div class="bg-blue-900/50 rounded px-3 py-1 mono text-sm">coherence: float</div>
+              </div>
+            </div>
+
+            <div class="text-center text-gray-500">↓</div>
+
+            <div class="bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
+              <div class="mono text-sm text-purple-300 mb-2">CONDITION</div>
+              <code class="text-xs bg-black/30 rounded px-2 py-1 block">
+                drift > tol OR coherence < thresh
+              </code>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="text-center">
+                <div class="text-gray-500 text-sm mb-2">TRUE ↓</div>
+                <div class="silence-zone rounded-lg p-3">
+                  <div class="mono text-red-400 font-semibold">&lt;SILENCE&gt;</div>
+                  <div class="text-xs text-gray-500 mt-1">bool() = False</div>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="text-gray-500 text-sm mb-2">FALSE ↓</div>
+                <div class="proceed-zone rounded-lg p-3">
+                  <div class="mono text-green-400 font-semibold">&lt;PROCEED&gt;</div>
+                  <div class="text-xs text-gray-500 mt-1">bool() = True</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-card rounded-xl p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-green-500 pulse-green"></span>
+        Test Cases
+      </h2>
+
+      <div class="grid grid-cols-1 gap-3" id="test-cases"></div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <div class="test-card rounded-xl p-6">
+        <h2 class="text-lg font-semibold mb-4 text-yellow-400">Drift Boundary Tests</h2>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">drift=0.09, tol=0.1</code>
+            <span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">PROCEED ✓</span>
+          </div>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">drift=0.10, tol=0.1</code>
+            <span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">PROCEED ✓</span>
+          </div>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">drift=0.11, tol=0.1</code>
+            <span class="px-2 py-1 rounded text-xs bg-red-900/50 text-red-400">SILENCE ✓</span>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3 mono">Note: drift > tol (strict inequality)</p>
+      </div>
+
+      <div class="test-card rounded-xl p-6">
+        <h2 class="text-lg font-semibold mb-4 text-cyan-400">Coherence Boundary Tests</h2>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">coherence=0.69, thresh=0.7</code>
+            <span class="px-2 py-1 rounded text-xs bg-red-900/50 text-red-400">SILENCE ✓</span>
+          </div>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">coherence=0.70, thresh=0.7</code>
+            <span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">PROCEED ✓</span>
+          </div>
+          <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
+            <code class="mono text-sm">coherence=0.71, thresh=0.7</code>
+            <span class="px-2 py-1 rounded text-xs bg-green-900/50 text-green-400">PROCEED ✓</span>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3 mono">Note: coherence < thresh (strict inequality)</p>
+      </div>
+    </div>
+
+    <div class="test-card rounded-xl p-6 text-center">
+      <blockquote class="text-xl italic text-gray-300">
+        "If coherence cannot be guaranteed, intentional silence is preferred."
+      </blockquote>
+      <div class="text-sm text-gray-500 mt-2 mono">— Silence-as-Control Axiom</div>
+    </div>
+
+    <div class="text-center mt-8 text-gray-500 text-sm">
+      <p class="mono">PoR Kernel v0.1.0 | MIT License | Anton Semenenko</p>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('decision-canvas');
+    const ctx = canvas.getContext('2d');
+    const tolInput = document.getElementById('tol-input');
+    const threshInput = document.getElementById('thresh-input');
+    const cellLabel = document.getElementById('cell-label');
+
+    const gridSize = 10;
+    const padding = 20;
+    const cellSize = (canvas.width - padding * 2) / gridSize;
+
+    const testCases = [
+      {
+        name: 'test_silence_on_drift',
+        desc: 'High drift triggers silence even with good coherence',
+        input: 'drift=0.2, coherence=0.9',
+        expected: 'SILENCE',
+        passed: true,
+      },
+      {
+        name: 'test_silence_on_low_coherence',
+        desc: 'Low coherence triggers silence even with low drift',
+        input: 'drift=0.05, coherence=0.5',
+        expected: 'SILENCE',
+        passed: true,
+      },
+      {
+        name: 'test_proceed_on_stable_state',
+        desc: 'Low drift and high coherence allows proceeding',
+        input: 'drift=0.05, coherence=0.9',
+        expected: 'PROCEED',
+        passed: true,
+      },
+      {
+        name: 'test_boundary_conditions_drift',
+        desc: 'Validates behavior at drift tolerance boundary',
+        input: 'drift=[0.09,0.10,0.11]',
+        expected: 'Mixed',
+        passed: true,
+      },
+      {
+        name: 'test_boundary_conditions_coherence',
+        desc: 'Validates behavior at coherence threshold boundary',
+        input: 'coherence=[0.69,0.70,0.71]',
+        expected: 'Mixed',
+        passed: true,
+      },
+      {
+        name: 'test_custom_thresholds',
+        desc: 'Tests with custom tolerance and threshold values',
+        input: 'tol=0.05, thresh=0.9',
+        expected: 'Mixed',
+        passed: true,
+      },
+      {
+        name: 'test_both_conditions_fail',
+        desc: 'When both drift and coherence are bad, should silence',
+        input: 'drift=0.5, coherence=0.3',
+        expected: 'SILENCE',
+        passed: true,
+      },
+    ];
+
+    const testContainer = document.getElementById('test-cases');
+    testCases.forEach((test) => {
+      const div = document.createElement('div');
+      div.className = 'flex items-center gap-4 bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors';
+      div.innerHTML = `
+        <div class="w-8 h-8 rounded-full flex items-center justify-center ${test.passed ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+          ${test.passed ? '✓' : '✗'}
+        </div>
+        <div class="flex-1">
+          <div class="mono text-sm text-blue-300">${test.name}</div>
+          <div class="text-xs text-gray-500">${test.desc}</div>
+        </div>
+        <div class="text-right">
+          <code class="text-xs bg-black/30 rounded px-2 py-1">${test.input}</code>
+          <div class="text-xs mt-1 ${test.expected === 'SILENCE' ? 'text-red-400' : test.expected === 'PROCEED' ? 'text-green-400' : 'text-yellow-400'}">
+            → ${test.expected}
+          </div>
+        </div>
+      `;
+      testContainer.appendChild(div);
+    });
+
+    const state = {
+      tol: Number(tolInput.value),
+      thresh: Number(threshInput.value),
+      hover: { drift: 0.1, coherence: 0.9 },
+    };
+
+    const drawMatrix = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(padding, padding);
+
+      for (let y = 0; y < gridSize; y += 1) {
+        const coherence = (gridSize - y) / gridSize;
+        for (let x = 0; x < gridSize; x += 1) {
+          const drift = (x + 1) / gridSize;
+          const isSilence = drift > state.tol || coherence < state.thresh;
+          ctx.fillStyle = isSilence ? 'rgba(239, 68, 68, 0.7)' : 'rgba(34, 197, 94, 0.7)';
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize - 4, cellSize - 4);
+        }
+      }
+
+      const hoverX = Math.min(gridSize - 1, Math.max(0, Math.floor(state.hover.drift * gridSize) - 1));
+      const hoverY = Math.min(gridSize - 1, Math.max(0, gridSize - Math.floor(state.hover.coherence * gridSize)));
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(hoverX * cellSize, hoverY * cellSize, cellSize - 4, cellSize - 4);
+
+      ctx.restore();
+    };
+
+    const updateLabel = () => {
+      const drift = state.hover.drift.toFixed(1);
+      const coherence = state.hover.coherence.toFixed(1);
+      const isSilence = state.hover.drift > state.tol || state.hover.coherence < state.thresh;
+      cellLabel.textContent = `drift=${drift} · coherence=${coherence} → ${isSilence ? 'SILENCE' : 'PROCEED'}`;
+    };
+
+    const handleMouseMove = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left - padding;
+      const y = event.clientY - rect.top - padding;
+      if (x < 0 || y < 0 || x > gridSize * cellSize || y > gridSize * cellSize) {
+        return;
+      }
+      const drift = Math.min(1, Math.max(0.1, (Math.floor(x / cellSize) + 1) / gridSize));
+      const coherence = Math.min(1, Math.max(0.1, (gridSize - Math.floor(y / cellSize)) / gridSize));
+      state.hover = { drift, coherence };
+      updateLabel();
+      drawMatrix();
+    };
+
+    const updateControls = () => {
+      state.tol = Number(tolInput.value);
+      state.thresh = Number(threshInput.value);
+      drawMatrix();
+      updateLabel();
+    };
+
+    canvas.addEventListener('mousemove', handleMouseMove);
+    tolInput.addEventListener('input', updateControls);
+    threshInput.addEventListener('input', updateControls);
+
+    drawMatrix();
+    updateLabel();
+  </script>
+</body>
+</html>

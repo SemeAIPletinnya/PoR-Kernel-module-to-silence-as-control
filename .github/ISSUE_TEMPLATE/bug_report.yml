@@ -1,5 +1,5 @@
 name: Bug report
-description: Повідомити про проблему, щоб ми могли її відтворити та виправити.
+description: Report an issue so we can reproduce and fix it.
 title: "[Bug]: "
 labels:
   - bug
@@ -7,20 +7,20 @@ body:
   - type: markdown
     attributes:
       value: |
-        Дякуємо за повідомлення про помилку. Будь ласка, заповніть поля нижче.
+        Thanks for reporting a bug. Please fill out the fields below.
   - type: textarea
     id: summary
     attributes:
-      label: Короткий опис
-      description: Що не працює або працює неправильно?
-      placeholder: Наприклад, модуль не ініціалізується після збирання.
+      label: Short summary
+      description: What is not working or working incorrectly?
+      placeholder: For example, the module fails to initialize after build.
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Кроки для відтворення
-      description: Опишіть точні кроки, щоб відтворити проблему.
+      label: Steps to reproduce
+      description: Describe the exact steps to reproduce the issue.
       placeholder: |
         1. ...
         2. ...
@@ -30,32 +30,32 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Очікувана поведінка
-      description: Що мало б статися?
+      label: Expected behavior
+      description: What should have happened?
     validations:
       required: true
   - type: textarea
     id: actual
     attributes:
-      label: Фактична поведінка
-      description: Що сталося насправді?
+      label: Actual behavior
+      description: What actually happened?
     validations:
       required: true
   - type: textarea
     id: environment
     attributes:
-      label: Середовище
-      description: Наведіть ОС, версію ядра та інші релевантні деталі.
+      label: Environment
+      description: Provide OS, kernel version, and other relevant details.
       placeholder: |
-        ОС: 
-        Версія ядра: 
-        Гілка/коміт: 
+        OS: 
+        Kernel version: 
+        Branch/commit: 
     validations:
       required: true
   - type: textarea
     id: logs
     attributes:
-      label: Логи та артефакти
-      description: Додайте логи, stack traces або інші артефакти.
+      label: Logs and artifacts
+      description: Add logs, stack traces, or other artifacts.
     validations:
       required: false
